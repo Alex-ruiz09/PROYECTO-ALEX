@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Superhéroes</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 10px 0 0 0;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(4, auto);
+            gap: 15px;
+            padding: 15px 50px 50px 50px;
+            background-color: #f0f0f0;
+        }
+
+        .space {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: stretch;
+            border-radius: 12px;
+            border: 1px solid black;
+            font-size: 16px;
+            background-color: white;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .space img {
+            max-width: 100%;
+            height: 450px;
+            padding: 0px 0px 20px 0px;
+            border-radius: 12px;
+            cursor: grab;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .space img:hover {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+
+        .space h2 {
+            color: black;
+            margin: 0;
+            font-size: 24px;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+        }
+
+        .space p {
+            color: black;
+            padding: 5px;
+            margin: 0;
+            font-size: 14px;
+            font-family:cursive;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+       
+        <div class="space">
+            <img src="https://es.gizmodo.com/app/uploads/2025/02/batman.jpg" alt="Imagen de Batman">
+            <h2>BATMAN</h2>
+            <p><b>PODERES:</b> Artes marciales y entrenamiento físico de nivel máximo.</p>
+            <p><b>DEBILIDADES:</b> Es completamente humano, vulnerable a heridas mortales. </p>
+        </div>
+        <div class="space">
+            <img src="https://www.comicverso.com/wp-content/uploads/2022/07/Resena-de-Comic-Capitan-America-y-Hulka.jpg" alt="Imagen de Captain America">
+            <h2>CAPITÁN AMÉRICA</h2>
+            <p><b>PODERES:</b> Tiene fuerza, velocidad y resistencia mejoradas.</p>
+            <p><b>DEBILIDADES:</b> No tiene protección contra ataques psíquicos o mágicos. </p>
+        </div>
+        <div class="space">
+            <img src="https://wallpapers.com/images/hd/deadpool-pictures-noc3x1b0bfzb026b.jpg" alt="Imagen de Deadpool">
+            <H2>DEADPOOL</H2>
+            <p><b>PODERES:</b> Regeneración extrema que lo hace inmortal y gran agilidad y fuerza mejorada. </p>
+            <p><b>DEBILIDADES:</b> Inestabilidad mental afecta sus decisiones. </p>
+        </div>
+        <div class="space">
+            <img src="https://img.posterstore.com/zoom/wb0143-8theflash-running50x70.jpg?auto=compress%2Cformat&fit=max&w=3840" alt="Imagen de Flash">
+            <H2>FLASH</H2>
+            <p><b>PODERES:</b> Velocidad extrema gracias a la Fuerza de la Velocidad. </p>
+            <p><b>DEBILIDADES:</b> Fatiga física o mental por uso excesivo de su velocidad. </p>
+        </div>
+        <div class="space">
+            <img src="https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/media/image/2022/08/comic-planet-hulk-2781145.jpg?tf=3840x" alt="Imagen de Hulk">
+            <H2>HULK</H2>
+            <p><b>PODERES:</b> Cuanto más se enfada, más fuerte se vuelve. </p>
+            <p><b>DEBILIDADES:</b> Transformación incontrolada, especialmente cuando se calma. </p>
+        </div>
+        <div class="space">
+            <img src="https://www.mundodeportivo.com/alfabeta/hero/2022/04/Iron-Man-15-ost-Powerful-Armors.jpg?width=1200" alt="Imagen de Iron Man">
+            <H2>IRON MAN</H2>
+            <p><b>PODERES:</b> Vuelo, rayos repulsores, y protección contra ataques físicos. </p>
+            <p><b>DEBILIDADES:</b> Dependencia del traje; sin él es vulnerable. </p>
+        </div>
+        <div class="space">
+            <img src="https://wallpapers.com/images/hd/spiderman-background-oycfyb1ksermw921.jpg" alt="Imagen de Spiderman">
+            <H2>SPIDERMAN</H2>
+            <p><b>PODERES:</b> Capacidad para trepar paredes y uso de telarañas </p>
+            <p><b>DEBILIDADES:</b> Veneno específico para arañas, ataques sónicos y químicos fuertes. </p>
+        </div>
+        <div class="space">
+            <img src="https://m.media-amazon.com/images/I/71+AOehzROL._AC_UF1000,1000_QL80_.jpg" alt="Imagen de Superman">
+            <H2>SUPERMAN</H2>
+            <p><b>PODERES:</b> Fuerza sobrehumana, vuelo a velocidades extremas y visión de rayos x. </p>
+            <p><b>DEBILIDADES:</b> Kryptonita (variedades como verde, roja y negra) y radiación solar roja debilita sus
+                poderes. </p>
+        </div>
+       
+        <div class="space">
+            <img src="https://www.cnet.com/a/img/resize/a50edf35a577c26e0c7ea0278e1561af9826ac6a/hub/2021/09/21/45da0d2c-61df-40e9-aae4-b2a81aadd6dd/thor-in-what-if.jpg?auto=webp&fit=crop&height=900&width=1200" alt="Imagen de thor">
+            <H2>THOR</H2>
+            <p><b>PODERES:</b> Fuerza divina y control sobre rayos y tormentas.</p>
+            <p><b>DEBILIDADES:</b> Vulnerable a enemigos con magia superior o igual. </p>
+        </div>
+        <div class="space">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhfi0ujJGaZXTiYO1N2wLkrgY6T8R1ToSG4A&s" alt="Imagen de Aquaman">
+            <h2>AQUAMAN</h2>
+            <p><b>PODERES:</b> Tiene fuerza y resistencia sobrehumanas. </p>
+            <p><b>DEBILIDADES:</b> Necesita hidratarse constantemente para mantener sus poderes.</p>
+        </div>
+        <div class="space">
+            <img src="https://i0.wp.com/brainstomping.com/wp-content/uploads/2024/08/WOLVERINE-Revenge-Hickman-Capullo.png?resize=790%2C1231&ssl=1" alt="Imagen de Wolverine">
+            <H2>WOLVERINE</H2>
+            <p><b>PODERES:</b> Factor de curación que lo hace casi inmortal y garras retráctiles de adamantium. </p>
+            <p><b>DEBILIDADES:</b> Vulnerable a envenenamiento o magnetismo por su esqueleto metálico. </p>
+        </div>
+        <div class="space">
+            <img src="https://m.media-amazon.com/images/M/MV5BZDUwZWIxNDItMjFmNi00ZjY4LWIzNTUtMmVhNmFhMjk0YjU4XkEyXkFqcGc@._V1_.jpg" alt="Imagen de Wonder Woman">
+            <H2>MUJER MARAVILLA</H2>
+            <p><b>PODERES:</b> Fuerza sobrehumana, velocidad extrema y armamento mágico. </p>
+            <p><b>DEBILIDADES:</b> Vulnerable a armas mágicas o divinas. </p>
+        </div>
+    </div>
+</body>
+
+</html>

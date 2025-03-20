@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Página</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .barra-superior {
+            position: fixed;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            height: 65px;
+            background-color: black;
+            color: white;
+            padding: 0 30px;
+        }
+
+        .enlaces-superior {
+            display: flex;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .enlaces-internos {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .enlaces-superior h4:hover {
+            color: #A63A50;
+        }
+
+        .contenedor-principal {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+
+        .seccion-introduccion {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            padding: 90px 40px;
+            align-items: center;
+            text-align: justify;
+        }
+
+        .texto-introduccion h1 {
+            font-size: 42px;
+            color: #8B0000;
+            margin-bottom: 20px;
+        }
+
+        .texto-introduccion p {
+            padding-bottom: 20px;
+        }
+
+        .boton-primario {
+            background-color: #8B0000;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .boton-primario p {
+            padding-top: 10px;
+            margin: 0;
+        }
+
+        .boton-primario:hover {
+            background-color: #8B0000;
+            transform: scale(1.05);
+        }
+
+        .seccion-sobre-mi {
+            display: flex;
+            flex-direction: column; 
+            align-items: center; 
+            text-align: center;
+            background-color: #8B0000;
+            color: white;
+            padding: 50px 30px;
+        }
+
+        .avatar-imagen {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%; 
+            overflow: hidden;
+            margin-bottom: 20px; 
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .avatar-imagen img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+        }
+
+        .seccion-sobre-mi p {
+            color: white;
+            font-size: 22px;
+            margin-inline: 20px;
+            margin-bottom: 10px;
+            margin-top: 10px;
+        }
+
+        .seccion-sobre-mi em {
+            font-size: 20px;
+            padding-top: 10px;
+            padding-bottom: 20px;
+        }
+
+        .seccion-proyectos {
+            display: grid;
+            grid-template-rows: auto auto;
+        }
+
+        .titulo-proyectos {
+            text-align: center;
+            font-size: 48px;
+            margin: 40px 0 20px;
+            color: #8B0000;
+        }
+
+        .contenedor-proyectos {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 40px;
+        }
+
+        .tarjeta-proyecto {
+            display: grid;
+            grid-template-rows: auto auto auto auto;
+            background-color: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .tarjeta-proyecto img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .tarjeta-proyecto h3 {
+            margin: 15px 0;
+            font-size: 24px;
+        }
+
+        .tarjeta-proyecto p {
+            padding: 20px;
+        }
+
+        .boton-secundario {
+            background-color: #8B0000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        .boton-secundario:hover {
+            background-color: #A63A50;
+            transform: scale(1.05);
+        }
+
+        .pie-pagina {
+            display: grid;
+            place-items: center;
+            background-color: #8B0000;
+            color: white;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="barra-superior">
+        <div class="nombre-brand">
+            <h3>Alexander Ruiz</h3>
+        </div>
+        <div class="enlaces-superior">
+            <h4>Inicio</h4>
+            <div class="enlaces-internos">
+                <h4>¿Quién Soy?</h4>
+                <h4>Proyectos</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="contenedor-principal">
+        <div class="seccion-introduccion">
+            <div class="imagen-introduccion">
+                <img src="./imagenes-blog/imagen escritorio sin fondo.png">
+            </div>
+            <div class="texto-introduccion">
+                <h1>¿Quién Soy?</h1>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem exercitationem, consectetur, officiis error, cumque tempora saepe minus suscipit dignissimos enim modi aliquam corrupti ex a rerum expedita eaque atque autem.</p>
+                <button class="boton-primario">
+                    <p>Leer más</p>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="seccion-sobre-mi">
+        <div class="avatar-imagen">
+            <img src="./imagenes-blog/imagen avatar1.avif">
+        </div>
+        <div class="contenido-sobre-mi">
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi porro deserunt magni necessitatibus, vitae sint aspernatur, quidem praesentium a sapiente maxime obcaecati aperiam recusandae nemo ea, facere corporis ut hic!</p>
+            <p><em>- Alexander Ruiz</em></p>
+        </div>
+    </div>
+
+    <div class="seccion-proyectos">
+        <h1 class="titulo-proyectos">Mis Proyectos</h1>
+        <div class="contenedor-proyectos">
+            <div class="tarjeta-proyecto">
+                <img src="./imagenes-blog/proyecto1.webp">
+                <h3>Proyecto 1</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, est odio ullam ipsam beatae culpa error. Eligendi porro, laudantium sunt eius beatae, incidunt in, suscipit optio ullam sapiente officia facere!</p>
+                <button class="boton-secundario">Ver Proyecto</button>
+            </div>
+
+            <div class="tarjeta-proyecto">
+                <img src="./imagenes-blog/proyecto2.jpg">
+                <h3>Proyecto 2</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit ea, architecto omnis, assumenda illo magni consectetur debitis distinctio voluptatibus ullam ducimus ut qui reiciendis quidem autem ipsam dolorem. Dolore, doloremque!</p>
+                <button class="boton-secundario">Ver Proyecto</button>
+            </div>
+
+            <div class="tarjeta-proyecto">
+                <img src="./imagenes-blog/proyecto3.png">
+                <h3>Proyecto 3</h3>
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sit inventore dicta nam a iusto! Reiciendis voluptatum praesentium cumque nulla quo mollitia eum vero sit? Quam quae perspiciatis distinctio explicabo aliquam.</p>
+                <button class="boton-secundario">Ver Proyecto</button>
+            </div>
+
+            <div class="tarjeta-proyecto">
+                <img src="./imagenes-blog/proyecto4.jpg">
+                <h3>Proyecto 4</h3>
+                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cumque deserunt corporis repellendus esse ad tenetur repudiandae officia suscipit quod nisi labore aut cupiditate, quia at, nihil asperiores obcaecati magnam eius!</p>
+                <button class="boton-secundario">Ver Proyecto</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="pie-pagina">
+        <p>Copyright © 2018. Todos los derechos reservados.</p>
+    </div>
+</body>
+
+</html>
+
+
