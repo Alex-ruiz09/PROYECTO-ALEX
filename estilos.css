@@ -73,9 +73,9 @@ header {
 }
 
 .project:hover {
-    transform: scale(1.07);
-    box-shadow: 0 0 18px rgba(41, 128, 185, 0.6);
-    background-color: rgba(52, 73, 94, 0.9);
+    transform: scale(1.1);
+    box-shadow:  0 0 18px rgba(147, 149, 149, 0.6);
+    background-color:  rgb(66, 70, 69);
 }
 
 .project::before {
