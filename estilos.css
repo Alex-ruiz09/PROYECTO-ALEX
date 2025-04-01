@@ -1,5 +1,5 @@
 container{
-    max-width: 900px;
+    max-width: 800px;
     margin: 40px auto;
     background: rgb(120, 112, 112);
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -20,6 +20,7 @@ header {
     background-color: #392E25;
     color: white;
     padding: 20px;
+    border-radius: 10px;
 }
 
 .title {
