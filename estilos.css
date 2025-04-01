@@ -1,3 +1,9 @@
+container{
+     max-width: 720px;
+            margin: 40px auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
 body {
     background-color: #8E7F73;
     color: #ecf0f1;
