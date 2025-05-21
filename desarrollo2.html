@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurante</title>
+</head>
+
+<body>
+    <div>
+        <h1>Restaurante</h1>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 20px; width: 70%;">
+        <input type="text" name="" id="nro" placeholder="nro">
+        <input type="text" name="" id="descripcion" placeholder="descricion">
+        <input type="text" name="" id="personas" placeholder="personas">
+        <input type="text" name="" id="estado" placeholder="estado" value="libre">
+        <button id="registrar">Guardar Mesa</button>
+    </div>
+
+    ---
+
+    <h2>Buscar Mesa</h2>
+    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+        <input type="text" id="buscarNro" placeholder="Buscar por número de mesa">
+        <button id="btnBuscar">Buscar</button>
+        <button id="btnMostrarTodos">Mostrar Todas</button>
+    </div>
+
+    ---
+
+    <div id="mesas">
+
+    </div>
+
+
+    <script>
+        /* https://img.freepik.com/vector-premium/dibujos-animados-mesa_119631-412.jpg */
+        let datosMesa = []
+        let modo = 0
+        let numMesa = ""
+
+
+        document.getElementById("registrar").addEventListener("click", () => {
+            if (modo == 0) {
+                console.log("estoy guardando...");
+                guardarMesa()
+            } else if (modo == 1) {
+                console.log("estoy editando...");
+                editarMesa()
+            }
+        })
+
+        document.getElementById("btnBuscar").addEventListener("click", () => {
+            buscarMesa();
+        });
+
+        document.getElementById("btnMostrarTodos").addEventListener("click", () => {
+            pintarMesas(datosMesa);
+        });
+
+
+        function guardarMesa() {
+            const nuevoNumeroMesa = document.getElementById("nro").value;
+
+            // --- CORRECCIÓN: VALIDAR SI EL NÚMERO DE MESA YA EXISTE AL PRINCIPIO ---
+            const mesaExistente = datosMesa.find(mesa => mesa.numero === nuevoNumeroMesa);
+            if (mesaExistente) {
+                alert(`Error: La mesa con el número ${nuevoNumeroMesa} ya existe. Por favor, elija otro número.`);
+                return; // Detener la función si la mesa ya existe
+            }
+            // ----------------------------------------------------------------------
+
+            // Validaciones de campos vacíos (se mantienen después de la validación de duplicados)
+            if (nuevoNumeroMesa === "") {
+                alert("Por favor digite el numero de mesa");
+                return;
+            } else if (document.getElementById("descripcion").value === "") {
+                alert("Por favor digite la descripcion");
+                return;
+            } else if (document.getElementById("personas").value === "") {
+                alert("Por favor digite la capcidad de la mesa");
+                return;
+            } else if (document.getElementById("estado").value === "") {
+                alert("Por favor digite el estado de la mesa");
+                return;
+            }
+
+            let mesa = {
+                numero: nuevoNumeroMesa,
+                descripcion: document.getElementById("descripcion").value,
+                personas: document.getElementById("personas").value,
+                estado: document.getElementById("estado").value.toLowerCase(),
+            }
+            console.log(mesa);
+            datosMesa.unshift(mesa)
+            alert("Registro exitoso")
+            limpiar()
+            console.log(datosMesa);
+            pintarMesas(datosMesa)
+        }
+
+        function limpiar() {
+            document.getElementById("nro").value = ""
+            document.getElementById("descripcion").value = ""
+            document.getElementById("personas").value = ""
+            document.getElementById("estado").value = "libre"
+        }
+
+        function editarMesa() {
+            let indice = datosMesa.findIndex(it => it.numero === numMesa) // Usar === para consistencia
+            console.log(indice);
+            datosMesa[indice].numero = document.getElementById("nro").value
+            datosMesa[indice].descripcion = document.getElementById("descripcion").value
+            datosMesa[indice].personas = document.getElementById("personas").value
+            datosMesa[indice].estado = document.getElementById("estado").value.toLowerCase()
+            pintarMesas(datosMesa)
+            modo = 0
+            document.getElementById("registrar").textContent = "Guardar Mesa"
+            limpiar()
+        }
+
+        function pintarMesas(mesasParaPintar) {
+            document.getElementById("mesas").textContent = ""
+            mesasParaPintar.forEach((item, i) => {
+                let divCard = document.createElement("div")
+                divCard.id = "divCard"
+
+                if (item.estado === "reservada") {
+                    divCard.classList.add("mesa-reservada");
+                } else if (item.estado === "ocupada") {
+                    divCard.classList.add("mesa-ocupada");
+                } else {
+                    divCard.classList.add("mesa-libre");
+                }
+
+                let divImagen = document.createElement("div")
+                let imagen = document.createElement("img")
+                imagen.id = "mesa"
+                imagen.src = "https://img.freepik.com/vector-premium/dibujos-animados-mesa_119631-412.jpg "
+                divImagen.appendChild(imagen)
+                divCard.appendChild(divImagen)
+                document.getElementById("mesas").appendChild(divCard)
+                let divTextos = document.createElement("div")
+                let parrafoDescripcion = document.createElement("p")
+                let numeroMesa = document.createElement("span")
+                numeroMesa.textContent = `Número: ${item.numero}`
+                parrafoDescripcion.textContent = `Descripción: ${item.descripcion}`
+                let personasMesa = document.createElement("p")
+                personasMesa.textContent = `Capacidad: ${item.personas}`
+                let estadoMesa = document.createElement("p")
+                estadoMesa.textContent = `Estado: ${item.estado}`
+
+                divTextos.appendChild(numeroMesa)
+                divTextos.appendChild(parrafoDescripcion)
+                divTextos.appendChild(personasMesa)
+                divTextos.appendChild(estadoMesa)
+                divCard.appendChild(divTextos)
+
+                let divBotones = document.createElement("div")
+                let editar = document.createElement("button")
+                editar.textContent = "📝"
+                editar.addEventListener("click", () => {
+                    document.getElementById("nro").value = item.numero
+                    document.getElementById("descripcion").value = item.descripcion
+                    document.getElementById("personas").value = item.personas
+                    document.getElementById("estado").value = item.estado
+                    document.getElementById("registrar").textContent = "Editar Mesa"
+                    modo = 1
+                    numMesa = item.numero
+                })
+                let eliminar = document.createElement("button")
+                eliminar.textContent = "❌"
+                eliminar.addEventListener("click", () => {
+                    let indice = datosMesa.findIndex(it => it.numero === item.numero)
+                    console.log(indice);
+                    datosMesa.splice(indice, 1)
+                    console.log(datosMesa);
+                    pintarMesas(datosMesa)
+
+                })
+                divBotones.appendChild(editar)
+                divBotones.appendChild(eliminar)
+                divCard.appendChild(divBotones)
+            })
+        }
+
+        function buscarMesa() {
+            const numeroBuscar = document.getElementById("buscarNro").value;
+            if (numeroBuscar === "") {
+                alert("Por favor ingrese un número de mesa para buscar.");
+                return;
+            }
+
+            const mesaEncontrada = datosMesa.filter(mesa => mesa.numero === numeroBuscar);
+
+            if (mesaEncontrada.length > 0) {
+                pintarMesas(mesaEncontrada);
+            } else {
+                document.getElementById("mesas").textContent = "No se encontró ninguna mesa con ese número.";
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            pintarMesas(datosMesa);
+        });
+
+    </script>
+    <style>
+        #mesa {
+            height: 100px;
+            width: 100px;
+        }
+
+        #divCard {
+            border: 1px solid gray;
+            border-radius: 10px;
+            box-shadow: 3px 3px 3px gray;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        #mesas {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+
+        .mesa-libre {
+            background-color: #e0ffe0;
+        }
+
+        .mesa-reservada {
+            background-color: #fff8e0;
+        }
+
+        .mesa-ocupada {
+            background-color: #ffe0e0;
+        }
+    </style>
+</body>
+
+</html>
