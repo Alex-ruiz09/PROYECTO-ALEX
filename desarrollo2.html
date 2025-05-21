@@ -64,15 +64,13 @@
         function guardarMesa() {
             const nuevoNumeroMesa = document.getElementById("nro").value;
 
-            // --- CORRECCIÓN: VALIDAR SI EL NÚMERO DE MESA YA EXISTE AL PRINCIPIO ---
+            
             const mesaExistente = datosMesa.find(mesa => mesa.numero === nuevoNumeroMesa);
             if (mesaExistente) {
                 alert(`Error: La mesa con el número ${nuevoNumeroMesa} ya existe. Por favor, elija otro número.`);
-                return; // Detener la función si la mesa ya existe
+                return; 
             }
-            // ----------------------------------------------------------------------
-
-            // Validaciones de campos vacíos (se mantienen después de la validación de duplicados)
+            
             if (nuevoNumeroMesa === "") {
                 alert("Por favor digite el numero de mesa");
                 return;
@@ -109,7 +107,7 @@
         }
 
         function editarMesa() {
-            let indice = datosMesa.findIndex(it => it.numero === numMesa) // Usar === para consistencia
+            let indice = datosMesa.findIndex(it => it.numero === numMesa) 
             console.log(indice);
             datosMesa[indice].numero = document.getElementById("nro").value
             datosMesa[indice].descripcion = document.getElementById("descripcion").value
