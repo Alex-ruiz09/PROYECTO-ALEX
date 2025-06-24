@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrador de Citas</title>
+</head>
+<style>
+    body{
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
+    /* Estilos generales para modales y formulario */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.6);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .contenido-modal {
+        background-color: #fefefe;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        width: 90%;
+        max-width: 550px;
+        position: relative;
+        animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .cerrar-modal {
+        color: #aaa;
+        font-size: 32px;
+        font-weight: bold;
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        cursor: pointer;
+        transition: color 0.2s ease;
+    }
+
+    .cerrar-modal:hover,
+    .cerrar-modal:focus {
+        color: #333;
+        text-decoration: none;
+    }
+
+    .contenido-modal h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 25px;
+    }
+
+    .contenido-modal form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .contenido-modal label {
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 5px;
+    }
+
+    .contenido-modal input[type="text"],
+    .contenido-modal input[type="email"],
+    .contenido-modal input[type="tel"],
+    .contenido-modal input[type="date"],
+    .contenido-modal input[type="time"],
+    .contenido-modal select,
+    .contenido-modal textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        box-sizing: border-box;
+        font-size: 16px;
+        transition: border-color 0.2s ease;
+    }
+
+    .contenido-modal input[type="text"]:focus,
+    .contenido-modal input[type="email"]:focus,
+    .contenido-modal input[type="tel"]:focus,
+    .contenido-modal input[type="date"]:focus,
+    .contenido-modal input[type="time"]:focus,
+    .contenido-modal select:focus,
+    .contenido-modal textarea:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+
+    .contenido-modal textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .contenido-modal button[type="submit"] {
+        background-color: #007bff;
+        color: white;
+        padding: 14px 25px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: 600;
+        margin-top: 15px;
+        transition: background-color 0.2s ease;
+        align-self: flex-end;
+    }
+
+    .contenido-modal button[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    /* Estilos del botón principal "Agendar Cita" */
+    #abrirModalBtn {
+        margin-left: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+    #abrirModalBtn:hover {
+        background-color: #218838;
+    }
+
+
+    /* Estilos para la lista de citas */
+    #listaCitas {
+        margin-top: 30px;
+        padding: 20px;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+
+    .cita-item {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 15px;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .cita-details {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        flex-grow: 1;
+    }
+
+    .mascota-img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 2px solid #ddd;
+    }
+
+    .cita-item div:not(.cita-actions) {
+        flex-grow: 1;
+    }
+
+    .cita-actions {
+        display: flex;
+        flex-direction: column; /* Apila los botones verticalmente */
+        gap: 10px;
+        /* Espacio entre botones de acción */
+    }
+
+    .cita-item button {
+        padding: 8px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.2s ease;
+    }
+
+    .cita-item button:hover {
+        opacity: 0.9;
+    }
+
+    /* Estilo para el botón de Editar */
+    .cita-item button:not(.delete-btn) {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .cita-item button:not(.delete-btn):hover {
+        background-color: #0056b3;
+    }
+
+    /* Estilo específico para el botón de Eliminar */
+    .delete-btn {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .delete-btn:hover {
+        background-color: #c82333;
+    }
+
+    /* Estilo para el select de estado dentro de la cita */
+    .cita-item select {
+        padding: 5px 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        margin-left: 5px;
+        width: auto;
+        vertical-align: middle; /* Alinea verticalmente con el texto */
+    }
+
+    /* Estilo para el modal de confirmación más pequeño */
+    .contenido-modal.small-modal {
+        max-width: 400px; /* Ancho máximo más pequeño */
+        padding: 25px;
+    }
+
+    .contenido-modal.small-modal h2 {
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .contenido-modal.small-modal p {
+        text-align: center;
+        margin-bottom: 25px;
+        font-size: 16px;
+        color: #555;
+    }
+
+    .modal-buttons {
+        display: flex;
+        justify-content: center; /* Centrar los botones */
+        gap: 15px; /* Espacio entre botones */
+        margin-top: 20px;
+    }
+
+    .modal-buttons button {
+        padding: 10px 25px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .modal-buttons button:hover {
+        transform: translateY(-1px); /* Pequeño efecto hover */
+    }
+
+    .btn-secondary {
+        background-color: #6c757d; /* Gris */
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+    .btn-danger {
+        background-color: #dc3545; /* Rojo de peligro */
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+    .h1{
+        background-color: #80a6ce;
+        padding: 25px;
+        border-radius: 5px;
+        font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif6
+
+    }
+</style>
+
+<body> 
+    <div class="h1">
+    <h1 style="display: flex; justify-content: center;"><strong>Administrador de citas</strong></h1>
+    </div>
+    <button id="abrirModalBtn">Agendar Cita</button>
+
+    <div id="miModal" class="modal">
+        <div class="contenido-modal">
+            <span class="cerrar-modal" onclick="cerrar()">&times;</span>
+            <h2 id="modalTitle">Agenda tu cita</h2>
+            <form id="citaForm">
+                <input type="hidden" id="citaId" name="citaId">
+
+                <label for="nombreMascota">Nombre de Mascota:</label>
+                <input type="text" id="nombreMascota" name="nombreMascota" required>
+
+                <label for="nombrePropietario">Nombre Propietario:</label>
+                <input type="text" id="nombrePropietario" name="nombrePropietario" required>
+
+                <label for="telefono">Teléfono:</label>
+                <input type="tel" id="telefono" name="telefono" required>
+
+                <label for="fechaCita">Fecha de Cita:</label>
+                <input type="date" id="fechaCita" name="fechaCita" required>
+
+                <label for="horaCita">Hora de la Cita:</label>
+                <input type="time" id="horaCita" name="horaCita" required>
+
+                <label for="tipoMascota">Tipo de Mascota:</label>
+                <select id="tipoMascota" name="tipoMascota" required>
+                    <option value="">Seleccionar</option>
+                    <option value="perro">Perro</option>
+                    <option value="gato">Gato</option>
+                    <option value="ave">Ave</option>
+                    <option value="roedor">Roedor</option>
+                    <option value="pez">Pez</option>
+                    <option value="reptil">Reptil</option>
+                    <option value="conejo">Conejo</option>
+                    <option value="hamster">Hámster</option>
+                    <option value="huron">Hurón</option>
+                    <option value="cerdo_vietnamita">Cerdo Vietnamita</option>
+                </select>
+
+                <label for="sintomas">Síntomas:</label>
+                <textarea id="sintomas" name="sintomas" rows="6"></textarea>
+
+                <button type="submit" id="submitBtn">Agendar</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="confirmModal" class="modal">
+        <div class="contenido-modal small-modal">
+            <span class="cerrar-modal" onclick="closeConfirmModal()">&times;</span>
+            <h2>¿Estás seguro?</h2>
+            <p id="confirmMessage">¿Realmente deseas eliminar esta cita?</p>
+            <div class="modal-buttons">
+                <button id="cancelConfirmBtn" class="btn-secondary">Cancelar</button>
+                <button id="deleteConfirmBtn" class="btn-danger">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="listaCitas">
+        <h2>Citas Agendadas</h2>
+    </div>
+
+    <script>
+        // Referencias a los elementos del DOM
+        const modal = document.getElementById('miModal');
+        const abrirModalBtn = document.getElementById('abrirModalBtn');
+        const cerrarModalBtn = document.querySelector('#miModal .cerrar-modal'); // Específico para el modal de cita
+        const citaForm = document.getElementById('citaForm');
+        const modalTitle = document.getElementById('modalTitle');
+        const submitBtn = document.getElementById('submitBtn');
+        const listaCitasDiv = document.getElementById('listaCitas');
+
+        // Referencias para el nuevo modal de confirmación
+        const confirmModal = document.getElementById('confirmModal');
+        const confirmMessage = document.getElementById('confirmMessage');
+        const cancelConfirmBtn = document.getElementById('cancelConfirmBtn');
+        const deleteConfirmBtn = document.getElementById('deleteConfirmBtn');
+
+        // Variables para el estado de la aplicación
+        let appointments = []; // Array para almacenar las citas
+        let editingCitaId = null; // Para saber si estamos editando una cita existente
+        let citaIdToDelete = null; // Para almacenar el ID de la cita a eliminar en el modal de confirmación
+
+        // Función para cerrar el modal principal (Agendar/Editar Cita)
+        function cerrar() {
+            modal.style.display = "none";
+            citaForm.reset(); // Limpia el formulario
+            editingCitaId = null; // Resetea el ID de edición
+            modalTitle.textContent = "Agenda tu cita"; // Restaura el título
+            submitBtn.textContent = "Agendar"; // Restaura el texto del botón
+            document.getElementById('citaId').value = ''; // Limpia el campo oculto del ID
+        }
+
+        // Funciones para controlar el modal de confirmación
+        function openConfirmModal(id, message) {
+            citaIdToDelete = id; // Guarda el ID de la cita que se quiere eliminar
+            confirmMessage.textContent = message; // Establece el mensaje de confirmación
+            confirmModal.style.display = 'flex'; // Muestra el modal de confirmación
+        }
+
+        function closeConfirmModal() {
+            confirmModal.style.display = 'none'; // Oculta el modal de confirmación
+            citaIdToDelete = null; // Resetea el ID de la cita a eliminar
+        }
+
+        // Función para renderizar/actualizar la lista de citas en el DOM
+        function renderAppointments() {
+            listaCitasDiv.innerHTML = '<h2>Citas Agendadas</h2>'; // Limpia el contenido actual
+
+            // Ya no hay un filtro global, así que se muestran todas las citas
+            const filteredAppointments = appointments;
+
+            if (filteredAppointments.length === 0) {
+                listaCitasDiv.innerHTML += '<p>No hay citas para mostrar.</p>';
+                return;
+            }
+
+            filteredAppointments.forEach(cita => {
+                const citaItem = document.createElement('div');
+                citaItem.classList.add('cita-item');
+
+                // Lógica para determinar la ruta de la imagen según el tipo de mascota
+                let imageSrc = '';
+                switch (cita.tipoMascota) {
+                    case 'perro':
+                        imageSrc = 'imagenes/perro.webp' ;
+                        break;
+                    case  'gato' :
+                        imageSrc = 'imagenes/gato.png'
+                        break;
+                    case  'ave' :
+                        imageSrc = 'imagenes/ave.png'
+                        break;
+                    case  'roedor' :
+                        imageSrc = 'imagenes/roedor.png'
+                        break;
+                        case  'pez' :
+                        imageSrc = 'imagenes/pez.jpg'
+                        break;
+                }
+
+                // Generación del HTML para cada tarjeta de cita
+                citaItem.innerHTML = `
+                    <div class="cita-details">
+                        <img src="${imageSrc}" alt="${cita.tipoMascota}" class="mascota-img">
+                        <div>
+                            <h3>Mascota: ${cita.nombreMascota}</h3>
+                            <p><strong>Propietario:</strong> ${cita.nombrePropietario}</p>
+                            <p><strong>Teléfono:</strong> ${cita.telefono}</p>
+                            <p><strong>Fecha:</strong> ${cita.fechaCita}</p>
+                            <p><strong>Hora:</strong> ${cita.horaCita}</p>
+                            <p><strong>Tipo:</strong> ${cita.tipoMascota}</p>
+                            <p>
+                                <label for="estado-${cita.id}"><strong>Estado:</strong></label>
+                                <select id="estado-${cita.id}" onchange="updateCitaEstado(${cita.id}, this.value)">
+                                    <option value="abierta" ${cita.estado === 'abierta' ? 'selected' : ''}>Abierta</option>
+                                    <option value="terminada" ${cita.estado === 'terminada' ? 'selected' : ''}>Terminada</option>
+                                    <option value="anulada" ${cita.estado === 'anulada' ? 'selected' : ''}>Anulada</option>
+                                </select>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="cita-actions">
+                        <button onclick="editCita(${cita.id})">Editar</button>
+                        <button class="delete-btn" onclick="deleteCita(${cita.id})">Eliminar</button>
+                    </div>
+                `;
+                listaCitasDiv.appendChild(citaItem);
+            });
+        }
+
+        // Función para editar una cita existente
+        function editCita(id) {
+            const citaToEdit = appointments.find(cita => cita.id === id);
+            if (citaToEdit) {
+                // Rellena el formulario con los datos de la cita
+                document.getElementById('citaId').value = citaToEdit.id;
+                document.getElementById('nombreMascota').value = citaToEdit.nombreMascota;
+                document.getElementById('nombrePropietario').value = citaToEdit.nombrePropietario;
+                document.getElementById('telefono').value = citaToEdit.telefono;
+                document.getElementById('fechaCita').value = citaToEdit.fechaCita;
+                document.getElementById('horaCita').value = citaToEdit.horaCita;
+                document.getElementById('tipoMascota').value = citaToEdit.tipoMascota;
+                document.getElementById('sintomas').value = citaToEdit.sintomas;
+
+                // Ajusta el título y el texto del botón para "Editar"
+                modalTitle.textContent = "Editar Cita";
+                submitBtn.textContent = "Guardar Cambios";
+                editingCitaId = id; // Establece el ID de la cita que se está editando
+                modal.style.display = 'flex'; // Abre el modal
+            }
+        }
+
+        // Función para iniciar el proceso de eliminación de una cita (muestra el modal de confirmación)
+        function deleteCita(id) {
+            // Muestra el modal de confirmación personalizado en lugar de un alert/confirm nativo
+            const cita = appointments.find(c => c.id === id);
+            openConfirmModal(id, `¿Estás seguro de que quieres eliminar la cita de ${cita ? cita.nombreMascota : 'esta mascota'}?`);
+        }
+
+        // Función para actualizar el estado de una cita individual desde su select
+        function updateCitaEstado(id, nuevoEstado) {
+            const citaIndex = appointments.findIndex(cita => cita.id === id);
+            if (citaIndex !== -1) {
+                appointments[citaIndex].estado = nuevoEstado; // Actualiza el estado en el array
+                console.log(`Cita con ID ${id} actualizada a estado: ${nuevoEstado}`);
+                // Si quisieras que un cambio de estado causara un re-render (ej. para ordenar), lo harías aquí:
+                // renderAppointments();
+            }
+        }
+
+        // Event Listeners - Control de interacciones del usuario
+        document.addEventListener('DOMContentLoaded', function () {
+            // Renderiza la lista de citas al cargar la página
+            renderAppointments();
+
+            // Cuando el botón "Agendar Cita" es clickeado
+            abrirModalBtn.addEventListener('click', function () {
+                modal.style.display = 'flex'; // Muestra el modal principal
+                modalTitle.textContent = "Agenda tu cita";
+                submitBtn.textContent = "Agendar";
+                citaForm.reset(); // Asegura que el formulario esté limpio
+                editingCitaId = null;
+                document.getElementById('citaId').value = '';
+            });
+
+            // Cuando se hace clic en la 'x' (cerrar) del modal principal
+            cerrarModalBtn.addEventListener('click', cerrar);
+
+            // Cuando se hace clic fuera del contenido del modal principal
+            window.addEventListener('click', function (event) {
+                if (event.target === modal) {
+                    cerrar();
+                }
+            });
+
+            // Cerrar el modal principal con la tecla 'Escape'
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape' && modal.style.display === 'flex') {
+                    cerrar();
+                }
+            });
+
+            // Manejo del envío del formulario (Agendar/Editar Cita)
+            citaForm.addEventListener('submit', function (event) {
+                event.preventDefault(); // Previene el envío por defecto del formulario
+
+                // Recoge los datos del formulario
+                const formData = new FormData(citaForm);
+                const newCita = {
+                    id: formData.get('citaId') ? parseInt(formData.get('citaId')) : Date.now(), // Usa ID existente o genera uno nuevo
+                    nombreMascota: formData.get('nombreMascota'),
+                    nombrePropietario: formData.get('nombrePropietario'),
+                    telefono: formData.get('telefono'),
+                    fechaCita: formData.get('fechaCita'),
+                    horaCita: formData.get('horaCita'),
+                    tipoMascota: formData.get('tipoMascota'),
+                    sintomas: formData.get('sintomas'),
+                    estado: 'abierta' // El estado inicial para nuevas citas
+                };
+
+                if (editingCitaId) {
+                    // Si estamos editando, actualiza la cita existente
+                    const index = appointments.findIndex(cita => cita.id === editingCitaId);
+                    if (index !== -1) {
+                        // Mantiene el estado existente de la cita al actualizarla desde el formulario
+                        appointments[index] = { ...newCita,
+                            id: editingCitaId,
+                            estado: appointments[index].estado
+                        };
+                    }
+                } else {
+                    // Si es una nueva cita, la añade al array
+                    appointments.push(newCita);
+                }
+
+                renderAppointments(); // Vuelve a renderizar la lista con los cambios
+                cerrar(); // Cierra el modal principal
+            });
+
+            // --- Event Listeners para el Modal de Confirmación ---
+            // Cuando se hace clic en "Cancelar" en el modal de confirmación
+            cancelConfirmBtn.addEventListener('click', closeConfirmModal);
+
+            // Cuando se hace clic en "Eliminar" en el modal de confirmación
+            deleteConfirmBtn.addEventListener('click', function () {
+                if (citaIdToDelete !== null) {
+                    // Filtra el array de citas para eliminar la que coincide con citaIdToDelete
+                    appointments = appointments.filter(cita => cita.id !== citaIdToDelete);
+                    renderAppointments(); // Vuelve a renderizar la lista
+                    closeConfirmModal(); // Cierra el modal de confirmación
+                }
+            });
+
+            // Cerrar el modal de confirmación con la tecla 'Escape'
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape' && confirmModal.style.display === 'flex') {
+                    closeConfirmModal();
+                }
+            });
+
+            // Cerrar el modal de confirmación haciendo clic fuera de él
+            window.addEventListener('click', function (event) {
+                if (event.target === confirmModal) {
+                    closeConfirmModal();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
